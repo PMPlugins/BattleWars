@@ -30,8 +30,6 @@ use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 
-use PMPlugins\BattleWars\Loader;
-
 class EventListener implements Listener{
 	
 		public function __construct(Loader $plugin){
