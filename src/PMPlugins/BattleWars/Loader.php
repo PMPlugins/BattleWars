@@ -192,7 +192,7 @@ class Main extends PluginBase{
 		public function broadcastGameMessage($message){
 			foreach($this->players as $p){
 				$player = $this->getServer()->getPlayer($p);
-				$player->sendMessage($message);
+				$player->sendMessage(self::PREFIX . $message);
 				return true;
 			}
 			return false;
