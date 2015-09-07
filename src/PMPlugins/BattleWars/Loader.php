@@ -23,7 +23,7 @@ class Main extends PluginBase{
 		const AUTHOR = "Legoboy0215";
 	
 		/** @var string VERSION Plugin version */
-		const VERSION = 1.0.0;
+		const VERSION = "1.0.0";
 	
 		/** @var string PREFIX Plugin message prefix */
 		const PREFIX = "[BattleWars]";
