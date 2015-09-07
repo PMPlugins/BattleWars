@@ -34,6 +34,7 @@ class EventListener implements Listener{
 	
 		public function __construct(Loader $plugin){
 			$this->plugin = $plugin;
+			$this->setting = $this->plugin->setting;
 			$this->pureperms = $this->plugin->getServer()->getPluginManager()->getPlugin("PurePerms");
 		}
 	
@@ -42,8 +43,38 @@ class EventListener implements Listener{
 			$name = $player->getName();
 			$tile = $player->getLevel()->getTile($event->getBlock());
 			$group = $this->pureperms->getUser($player)->getGroup()->getName();
+			$blue = trim(strtolower($this->setiing->get("signtext_blue")));
+			$red = trim(strtolower($this->setiing->get("signtext_red")));
+			$green = trim(strtolower($this->setiing->get("signtext_green")));
+			$yellow = trim(strtolower($this->setiing->get("signtext_yellow")));
+
 			if($tile instanceof Sign){
 				$text = $tile->getText();
+				$final = trim(strtolower($this->setting->get("signtext1")));
+				if(TextFormat::clean(trim(strtolower($text[0]))) = $final){
+					switch(TextFormat::clean(trim(strtolower($text[1])))){
+						case $blue:
+							$this->plugin->addToTeam($player, "blue");
+							return true;
+							break;
+						case $red:
+							$this->plugin->addToTeam($player, "red");
+							return true;
+							break;
+						case $green:
+							$this->plugin->addToTeam($player, "green");
+							return true;
+							break;
+						case $yellow:
+							$this->plugin->addToTeam($player, "yellow");
+							return true;
+							break;
+						default:
+							$this->plugin->joinWorld($player, $this->plugin->waitworld);
+							return true;
+							break;
+					}
+				}
 			}
 		}
 }

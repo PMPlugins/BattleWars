@@ -13,12 +13,8 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\tile\Sign;
 use pocketmine\tile\Chest;
 
-class Main extends PluginBase{ 
+class Loader extends PluginBase{ 
 
-	/**
-	* @return SuperAPI
-	*/
-	
 		/** @var string AUTHOR Plugin author(s) */
 		const AUTHOR = "Legoboy0215";
 	
@@ -38,7 +34,10 @@ class Main extends PluginBase{
 			    "battlewars_waitinglobby" => "bwlobby",
 				"battlewars_gameworld" => "bwgame",
 				"signtext1" => "[BattleWars]",
-				"signtext2" => "JOIN",
+				"signtext_blue" => "[Blue]",
+				"signtext_red" => "[Red]",
+				"signtext_green" => "[Green]",
+				"signtext_yellow" => "[Yellow]",
 				"game_time_sec" => 600,
                 "max_player_per_team" => 6,
                 "team_spawn_locs" => array(
@@ -58,8 +57,8 @@ class Main extends PluginBase{
 			$this->red = array();
 			$this->green = array();
 			$this->yellow = array();
-			$this->gameworld = $this->getServer()->getLevelByName($this->setting->get("battlewars_gameworld"));
-			$this->waitlobby = $this->getServer()->getLevelByName($this->setting->get("battlewars_waitinglobby"));
+			$this->gameworld = $this->setting->get("battlewars_gameworld");
+			$this->waitworld = $this->setting->get("battlewars_waitinglobby");
 			if(!$this->getServer()->isLevelLoaded($this->gameworld)){
 			    $this->getServer()->loadLevel($this->gameworld);
 			    $this->getServer()->loadLevel($this->waitlobby);
@@ -196,5 +195,13 @@ class Main extends PluginBase{
 				return true;
 			}
 			return false;
+		}
+		
+		public function joinWorld(Player $player, $levelname){
+			$level = $this->getServer()->getLevelByName($levelname);
+			if($level instanceof Level){
+				$player->teleport($level);
+				$player->sendMessage(TextFormat::GREEN . "Teleporting...");
+			}
 		}
 }
