@@ -64,96 +64,19 @@ class Loader extends PluginBase{
 			    $this->getServer()->loadLevel($this->waitworld);
 			}
 			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-            $this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
+            		$this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
 			$this->startGame();
-			
-			
-			$this->arenas = new Config($this->getDataFolder() . "arenas.yml", Config::YAML, array
-            (
-				"arenas" => array(
-                "arena-1" => array(
-                    "players" => array(
-						"haha"
-					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
-				"arena-2" => array(
-                    "players" => array(
-					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
-				"arena-3" => array(
-                    "players" => array(
-					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
-				"arena-4" => array(
-                    "players" => array(
-					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
-				"arena-5" => array(
-                    "players" => array(
-					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
-				)
-            )
-			);
         }
 
         public function onDisable(){
 			$this->setting->save();
-			$this->unsetData();
-			$this->arenas->save();
-            $this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
+            		$this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
         }
 		
 		public function startGame(){
 		}
 
 		public function endGame(){
-		}
-		
-		public function unsetData(){
-			foreach($this->arenas->get("arenas")["arena-1"]["players"] as $p){
-				unset($p);
-			} //I want to remove all players and team data. I don't know how. Help please!
 		}
 	    ///////////////////////////API-Functions\\\\\\\\\\\\\\\\\\\\\\\
 		
