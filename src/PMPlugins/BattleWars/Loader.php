@@ -68,20 +68,79 @@ class Loader extends PluginBase{
 			$this->startGame();
 			
 			
-			$this->test = new Config($this->getDataFolder() . "test.yml", Config::YAML, array
+			$this->arenas = new Config($this->getDataFolder() . "arenas.yml", Config::YAML, array
             (
+				"arenas" => array(
                 "arena-1" => array(
                     "players" => array(
-						"lol" => array(1,2,2),
+						"haha"
+					),
+					"blue" => array(
+					),
+					"red" => array(
+					),
+					"green" => array(
+					),
+					"yellow" => array(
 					),
                 ),
+				"arena-2" => array(
+                    "players" => array(
+					),
+					"blue" => array(
+					),
+					"red" => array(
+					),
+					"green" => array(
+					),
+					"yellow" => array(
+					),
+                ),
+				"arena-3" => array(
+                    "players" => array(
+					),
+					"blue" => array(
+					),
+					"red" => array(
+					),
+					"green" => array(
+					),
+					"yellow" => array(
+					),
+                ),
+				"arena-4" => array(
+                    "players" => array(
+					),
+					"blue" => array(
+					),
+					"red" => array(
+					),
+					"green" => array(
+					),
+					"yellow" => array(
+					),
+                ),
+				"arena-5" => array(
+                    "players" => array(
+					),
+					"blue" => array(
+					),
+					"red" => array(
+					),
+					"green" => array(
+					),
+					"yellow" => array(
+					),
+                ),
+				)
             )
 			);
         }
 
         public function onDisable(){
-			//$this->setting->save();
-			
+			$this->setting->save();
+			$this->unsetData();
+			$this->arenas->save();
             $this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
         }
 		
@@ -89,6 +148,12 @@ class Loader extends PluginBase{
 		}
 
 		public function endGame(){
+		}
+		
+		public function unsetData(){
+			foreach($this->arenas->get("arenas")["arena-1"]["players"] as $p){
+				unset($p);
+			} //I want to remove all players and team data. I don't know how. Help please!
 		}
 	    ///////////////////////////API-Functions\\\\\\\\\\\\\\\\\\\\\\\
 		
