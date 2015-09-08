@@ -50,7 +50,7 @@ class Loader extends PluginBase{
                 "waiting_time_sec" => 20,
                 "game_time_sec" => 600,
             )
-        );
+			);
 			/** @var string players Game list of players */
 		    $this->players = array();
 			$this->blue = array();
@@ -61,23 +61,34 @@ class Loader extends PluginBase{
 			$this->waitworld = $this->setting->get("battlewars_waitinglobby");
 			if(!$this->getServer()->isLevelLoaded($this->gameworld)){
 			    $this->getServer()->loadLevel($this->gameworld);
-			    $this->getServer()->loadLevel($this->waitlobby);
+			    $this->getServer()->loadLevel($this->waitworld);
 			}
 			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
             $this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
 			$this->startGame();
+			
+			
+			$this->test = new Config($this->getDataFolder() . "test.yml", Config::YAML, array
+            (
+                "arena-1" => array(
+                    "players" => array(
+						"lol" => array(1,2,2),
+					),
+                ),
+            )
+			);
         }
 
         public function onDisable(){
-			$this->setting->save();
+			//$this->setting->save();
 			
             $this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
         }
 		
-		public function startGame($game){
+		public function startGame(){
 		}
 
-		public function endGame($game){
+		public function endGame(){
 		}
 	    ///////////////////////////API-Functions\\\\\\\\\\\\\\\\\\\\\\\
 		
