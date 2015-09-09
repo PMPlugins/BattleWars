@@ -42,7 +42,6 @@ class Loader extends PluginBase{
                 "game_time_sec" => 600,
             )
 			);
-<<<<<<< HEAD
 			$this->arena = new Config($this->getDataFolder() . "arena.yml", Config::YAML, array
             (
 				"arena-1" => array(
@@ -110,113 +109,24 @@ class Loader extends PluginBase{
 			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
             $this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
 			$this->startMatches();
-=======
-			/** @var string players Game list of players */
-		    $this->players = array();
-			$this->blue = array();
-			$this->red = array();
-			$this->green = array();
-			$this->yellow = array();
-			$this->gameworld = $this->setting->get("battlewars_gameworld");
-			$this->waitworld = $this->setting->get("battlewars_waitinglobby");
-			if(!$this->getServer()->isLevelLoaded($this->gameworld)){
-			    $this->getServer()->loadLevel($this->gameworld);
-			    $this->getServer()->loadLevel($this->waitworld);
-			}
-			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-            		$this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
-			$this->startGame();
->>>>>>> origin/master
         }
 
         public function onDisable(){
 			$this->setting->save();
-<<<<<<< HEAD
 			$this->arena->save();
-            $this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
-=======
             		$this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
->>>>>>> origin/master
+            		$this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
         }
 
-<<<<<<< HEAD
 		public function startMatches(){
 			if($this->arena1status){
 				$arena = new ArenaManager(1, $this);
-=======
-		public function endGame(){
-		}
-	    ///////////////////////////API-Functions\\\\\\\\\\\\\\\\\\\\\\\
-		
-		function array_mt_rand(array $a){
-            return array_values($a)[mt_rand(0, count($a) - 1)];
-        }
-		
-		public function addToTeam(Player $player, $team){
-			switch(strtolower($team)){
-				case "blue":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->blue, $p->getName());
-						$player->setNameTag(TextFormat::BLUE . $p->getName()); 
-						$player->setDisplayName(TextFormat::BLUE . $p->getName());
-						$player->sendMessage(TextFormat::BLUE . "You joined the blue team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the blue team is full!");
-					}
-					break;
-				case "red":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->red, $p->getName());
-						$player->setNameTag(TextFormat::BLUE . $p->getName()); 
-						$player->setDisplayName(TextFormat::BLUE . $p->getName());
-						$player->sendMessage(TextFormat::BLUE . "You joined the red team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the red team is full!");
-					}
-					break;
-				case "green":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->blue, $p->getName());
-						$player->setNameTag(TextFormat::BLUE . $p->getName()); 
-						$player->setDisplayName(TextFormat::BLUE . $p->getName());
-						$player->sendMessage(TextFormat::BLUE . "You joined the green team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the green team is full!");
-					}
-					break;
-				case "yellow":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->yellow, $p->getName());
-						$player->setNameTag(TextFormat::YELLOW . $p->getName()); 
-						$player->setDisplayName(TextFormat::YELLOW . $p->getName());
-						$player->sendMessage(TextFormat::YELLOW . "You joined the yellow team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the yellow team is full!");
-					}
-					break;
->>>>>>> origin/master
 			}
 			if($this->arena2status){
 				$arena = new ArenaManager(2, $this);
 			}
-<<<<<<< HEAD
 			if($this->arena3status){
 				$arena = new ArenaManager(3, $this);
-=======
-		}
-		
-		/**
-		* @param string $match
-		* @return bool
-		*/
-		
-		public function checkIfMatchFull(){
-			$max = $this->setting->get("max_player_per_team") * 4;
-			if(count($this->players) >= $max){
-				return true;
-			}else{
-				return false;
->>>>>>> origin/master
 			}
 			if($this->arena4status){
 				$arena = new ArenaManager(4, $this);
