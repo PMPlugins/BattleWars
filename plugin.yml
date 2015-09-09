@@ -3,6 +3,7 @@ author: PMPlugins
 version: 1.0.0
 description: A simple teaming war plugin. WIP...
 main: PMPlugins\BattleWars\Loader
+depend:
+- PurePerms
+- EconomyAPI
 api: [1.12.0]
-commands:
-permissions:
