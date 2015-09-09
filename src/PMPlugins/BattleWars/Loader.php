@@ -9,9 +9,8 @@ use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\tile\Sign;
-use pocketmine\tile\Chest;
+use PMPlugins\BattleWars\arenas\ArenaManager;
+
 
 class Loader extends PluginBase{ 
 
@@ -107,7 +106,7 @@ class Loader extends PluginBase{
 			$this->arena4status = $this->arena->get("arena-4")['enabled'];
 			$this->arena5status = $this->arena->get("arena-5")['enabled'];
 			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-            $this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
+            		$this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
 			$this->startMatches();
         }
 
@@ -115,32 +114,31 @@ class Loader extends PluginBase{
 			$this->setting->save();
 			$this->arena->save();
             		$this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
-            		$this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
         }
 
-		public function startMatches(){
-			if($this->arena1status){
-				$arena = new ArenaManager(1, $this);
-			}
-			if($this->arena2status){
-				$arena = new ArenaManager(2, $this);
-			}
-			if($this->arena3status){
-				$arena = new ArenaManager(3, $this);
-			}
-			if($this->arena4status){
-				$arena = new ArenaManager(4, $this);
-			}
-			if($this->arena5status){
-				$arena = new ArenaManager(5, $this);
-			}
+	public function startMatches(){
+		if($this->arena1status){
+			$arena = new ArenaManager(1, $this);
 		}
+		if($this->arena2status){
+			$arena = new ArenaManager(2, $this);
+		}
+		if($this->arena3status){
+			$arena = new ArenaManager(3, $this);
+		}
+		if($this->arena4status){
+			$arena = new ArenaManager(4, $this);
+		}
+		if($this->arena5status){
+			$arena = new ArenaManager(5, $this);
+		}
+	}
 		
-		public function joinWorld(Player $player, $levelname){
-			$level = $this->getServer()->getLevelByName($levelname);
-			if($level instanceof Level){
-				$player->teleport($level);
-				$player->sendMessage(TextFormat::GREEN . "Teleporting...");
-			}
+	public function joinWorld(Player $player, $levelname){
+		$level = $this->getServer()->getLevelByName($levelname);
+		if($level instanceof Level){
+			$player->teleport($level);
+			$player->sendMessage(TextFormat::GREEN . "Teleporting...");
 		}
+	}
 }
