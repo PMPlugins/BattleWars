@@ -118,19 +118,19 @@ class Loader extends PluginBase{
 
 		public function startMatches(){
 			if($this->arena1status){
-				$arena = new ArenaManager("arena-1", $this);
+				$this->arena1 = new ArenaManager("arena-1", $this);
 			}
 			if($this->arena2status){
-				$arena = new ArenaManager("arena-2", $this);
+				$this->arena2 = new ArenaManager("arena-2", $this);
 			}
 			if($this->arena3status){
-				$arena = new ArenaManager("arena-3", $this);
+				$this->arena3 = new ArenaManager("arena-3", $this);
 			}
 			if($this->arena4status){
-				$arena = new ArenaManager("arena-4", $this);
+				$this->arena4 = new ArenaManager("arena-4", $this);
 			}
 			if($this->arena5status){
-				$arena = new ArenaManager("arena-5", $this);
+				$this->arena5 = new ArenaManager("arena-5", $this);
 			}
 		}
 		
