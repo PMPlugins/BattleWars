@@ -30,9 +30,9 @@ use PMPlugins\BattleWars\Loader;
 
 class ArenaManager implements Listener{ 
 	
-		public function __construct($arenaid, Loader $plugin){
+		public function __construct($arenaname, Loader $plugin){
 			$this->plugin = $plugin;
-			$this->arenaid = $arenaid;
+			$this->arenaname = $arenaname;
 			$this->blue = array();
 			$this->red = array();
 			$this->green = array();
@@ -44,8 +44,8 @@ class ArenaManager implements Listener{
 			$player = $event->getPlayer();
 			$name = $player->getName();
 			$tile = $player->getLevel()->getTile($event->getBlock());
-			$waitworld = $this->plugin->arena->get("arena-" . $this->arenaid)['waiting_world'];
-			$matchworld = $this->plugin->arena->get("arena-" . $this->arenaid)['arena_names'];
+			$waitworld = $this->plugin->arena->get($this->arenaname)['waiting_world'];
+			$matchworld = $this->plugin->arena->get($this->arenaname)['arena_names'];
 			$group = $this->plugin->pureperms->getUser($player)->getGroup()->getName();
 			$blue = trim(strtolower($this->plugin->setting->get("signtext_blue")));
 			$red = trim(strtolower($this->plugin->setting->get("signtext_red")));
@@ -83,8 +83,8 @@ class ArenaManager implements Listener{
 		} 
 		
 		//////Functions
-		public function getArenaId(){
-			return $this->arenaid;
+		public function getArenaName(){
+			return $this->arenaname;
 		}
 		
 		public function addToTeam(Player $player, $team){
