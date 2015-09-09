@@ -173,7 +173,7 @@ class Loader extends PluginBase{
 		* @return bool
 		*/
 		
-		public function checkIfGameFull(){
+		public function checkIfMatchFull(){
 			$max = $this->setting->get("max_player_per_team") * 4;
 			if(count($this->players) >= $max){
 				return true;
