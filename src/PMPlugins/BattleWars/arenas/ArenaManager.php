@@ -138,7 +138,36 @@ class ArenaManager implements Listener{
 		}
 		
 		public function checkIfTeamFull($team){
-			
+			switch($team){
+				case "blue":
+					if(count($this->blue) >= $this->plugin->setting->get("max_player_per_team")){
+						return true;
+					}else{
+						return false;
+					}
+					break;
+				case "red":
+					if(count($this->red) >= $this->plugin->setting->get("max_player_per_team")){
+						return true;
+					}else{
+						return false;
+					}
+					break;
+				case "green":
+					if(count($this->green) >= $this->plugin->setting->get("max_player_per_team")){
+						return true;
+					}else{
+						return false;
+					}
+					break;
+				case "yellow":
+					if(count($this->yellow) >= $this->plugin->setting->get("max_player_per_team")){
+						return true;
+					}else{
+						return false;
+					}
+					break;
+			}
 		}
 		
 		public function getTeam(Player $player){
@@ -157,7 +186,7 @@ class ArenaManager implements Listener{
 		}
 		
 		public function checkIfMatchFull(){
-			if(count($this->players) >= $this->plugin->get("max_player_per_team") * 4){
+			if(count($this->players) >= $this->plugin->setting->get("max_player_per_team") * 4){
 				return true;
 			}else{
 				return false;
