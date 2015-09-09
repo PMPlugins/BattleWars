@@ -25,14 +25,11 @@ class Loader extends PluginBase{
 		const PREFIX = "[BattleWars]";
 
         public function onEnable(){
-	        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 			if(!file_exists($this->getDataFolder())){
 				@mkdir($this->getDataFolder());
 			}
 			$this->setting = new Config($this->getDataFolder() . "setting.yml", Config::YAML, array
             (
-			    "battlewars_waitinglobby" => "bwlobby",
-				"battlewars_gameworld" => "bwgame",
 				"signtext1" => "[BattleWars]",
 				"signtext_blue" => "[Blue]",
 				"signtext_red" => "[Red]",
@@ -40,237 +37,102 @@ class Loader extends PluginBase{
 				"signtext_yellow" => "[Yellow]",
 				"game_time_sec" => 600,
                 "max_player_per_team" => 6,
-                "team_spawn_locs" => array(
-                    array(1,2,3),
-                    array(1,2,3),
-                    array(1,2,3),
-                    array(1,2,3),
-                ),
                 "min_players_total" => 4,
                 "waiting_time_sec" => 20,
                 "game_time_sec" => 600,
             )
 			);
-			/** @var string players Game list of players */
-		    $this->players = array();
-			$this->blue = array();
-			$this->red = array();
-			$this->green = array();
-			$this->yellow = array();
-			$this->gameworld = $this->setting->get("battlewars_gameworld");
-			$this->waitworld = $this->setting->get("battlewars_waitinglobby");
-			if(!$this->getServer()->isLevelLoaded($this->gameworld)){
-			    $this->getServer()->loadLevel($this->gameworld);
-			    $this->getServer()->loadLevel($this->waitworld);
-			}
-			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-            $this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
-			$this->startGame();
-			
-			
-			$this->arenas = new Config($this->getDataFolder() . "arenas.yml", Config::YAML, array
+			$this->arena = new Config($this->getDataFolder() . "arena.yml", Config::YAML, array
             (
-				"arenas" => array(
-                "arena-1" => array(
-                    "players" => array(
-						"haha"
+				"arena-1" => array(
+					"enabled" => true,
+					"waiting_world" => "",
+					"arena_name" => "",
+					"team_spawn_locs" => array(
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
 					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
+				)
 				"arena-2" => array(
-                    "players" => array(
+					"enabled" => false,
+					"waiting_world" => "",
+					"arena_name" => "",
+					"team_spawn_locs" => array(
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
 					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
+				)
 				"arena-3" => array(
-                    "players" => array(
+					"enabled" => false,
+					"waiting_world" => "",
+					"arena_name" => "",
+					"team_spawn_locs" => array(
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
 					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
+				)
 				"arena-4" => array(
-                    "players" => array(
+					"enabled" => false,
+					"waiting_world" => "",
+					"arena_name" => "",
+					"team_spawn_locs" => array(
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
 					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
+				)
 				"arena-5" => array(
-                    "players" => array(
+					"enabled" => false,
+					"waiting_world" => "",
+					"arena_name" => "",
+					"team_spawn_locs" => array(
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
+						array(1,2,3),
 					),
-					"blue" => array(
-					),
-					"red" => array(
-					),
-					"green" => array(
-					),
-					"yellow" => array(
-					),
-                ),
 				)
             )
 			);
+			$this->arena1status = $this->arena->get("arena-1")['enabled'];
+			$this->arena2status = $this->arena->get("arena-2")['enabled'];
+			$this->arena3status = $this->arena->get("arena-3")['enabled'];
+			$this->arena4status = $this->arena->get("arena-4")['enabled'];
+			$this->arena5status = $this->arena->get("arena-5")['enabled'];
+			$this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
+            $this->getLogger()->info(TextFormat::GREEN . "BattleWars has been started and configured!"); 
+			$this->startMatches();
         }
 
         public function onDisable(){
 			$this->setting->save();
-			$this->unsetData();
-			$this->arenas->save();
+			$this->arena->save();
             $this->getLogger()->info(TextFormat::RED . "BattleWars has been stopped and configuration has been saved!");
         }
-		
-		public function startGame(){
-		}
 
-		public function endGame(){
-		}
-		
-		public function unsetData(){
-			foreach($this->arenas->get("arenas")["arena-1"]["players"] as $p){
-				unset($p);
-			} //I want to remove all players and team data. I don't know how. Help please!
-		}
-	    ///////////////////////////API-Functions\\\\\\\\\\\\\\\\\\\\\\\
-		
-		function array_mt_rand(array $a){
-            return array_values($a)[mt_rand(0, count($a) - 1)];
-        }
-		
-		public function addToTeam(Player $player, $team){
-			switch(strtolower($team)){
-				case "blue":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->blue, $p->getName());
-						$player->setNameTag(TextFormat::BLUE . $p->getName()); 
-						$player->setDisplayName(TextFormat::BLUE . $p->getName());
-						$player->sendMessage(TextFormat::BLUE . "You joined the blue team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the blue team is full!");
-					}
-					break;
-				case "red":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->red, $p->getName());
-						$player->setNameTag(TextFormat::BLUE . $p->getName()); 
-						$player->setDisplayName(TextFormat::BLUE . $p->getName());
-						$player->sendMessage(TextFormat::BLUE . "You joined the red team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the red team is full!");
-					}
-					break;
-				case "green":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->blue, $p->getName());
-						$player->setNameTag(TextFormat::BLUE . $p->getName()); 
-						$player->setDisplayName(TextFormat::BLUE . $p->getName());
-						$player->sendMessage(TextFormat::BLUE . "You joined the green team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the green team is full!");
-					}
-					break;
-				case "yellow":
-					if($this->checkIfTeamFull($team)){
-						array_push($this->yellow, $p->getName());
-						$player->setNameTag(TextFormat::YELLOW . $p->getName()); 
-						$player->setDisplayName(TextFormat::YELLOW . $p->getName());
-						$player->sendMessage(TextFormat::YELLOW . "You joined the yellow team!");
-					}else{
-						$player->sendMessage(TextFormat::RED . "Sorry, the yellow team is full!");
-					}
-					break;
+		public function startMatches(){
+			if($this->arena1status){
+				$arena = new ArenaManager(1, $this);
 			}
-		}
-		
-		/**
-		* @param string $team
-		* @return bool
-		*/
-		
-		public function checkIfTeamFull($team){
-			$max = $this->setting->get("max_player_per_team");
-			switch($strtolower($team)){
-				case "blue":
-					if(count($this->blue) >= $max){
-						return true;
-					}else{
-						return false;
-					}
-					break;
-				case "red":
-					if(count($this->red) >= $max){
-						return true;
-					}else{
-						return false;
-					}
-					break;
-				case "green":
-					if(count($this->green) >= $max){
-						return true;
-					}else{
-						return false;
-					}
-					break;
-				case "yellow":
-					if(count($this->yellow) >= $max){
-						return true;
-					}else{
-						return false;
-					}
-					break;
+			if($this->arena2status){
+				$arena = new ArenaManager(2, $this);
 			}
-		}
-		
-		/**
-		* @param string $match
-		* @return bool
-		*/
-		
-		public function checkIfGameFull(){
-			$max = $this->setting->get("max_player_per_team") * 4;
-			if(count($this->players) >= $max){
-				return true;
-			}else{
-				return false;
+			if($this->arena3status){
+				$arena = new ArenaManager(3, $this);
 			}
-		}
-		
-		/**
-		* @param string $message
-		* @return bool
-		*/
-		
-		public function broadcastGameMessage($message){
-			foreach($this->players as $p){
-				$player = $this->getServer()->getPlayer($p);
-				$player->sendMessage(self::PREFIX . $message);
-				return true;
+			if($this->arena4status){
+				$arena = new ArenaManager(4, $this);
 			}
-			return false;
+			if($this->arena5status){
+				$arena = new ArenaManager(5, $this);
+			}
 		}
 		
 		public function joinWorld(Player $player, $levelname){
